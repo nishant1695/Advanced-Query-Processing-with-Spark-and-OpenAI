@@ -24,7 +24,7 @@ Setting up the EMR cluster is fairly straight forward. We used a [bootstrap scri
 sudo python3 -m pip install numpy pandas langchain pypdf2 langchain-community faiss-cpu boto3 sentence_transformers==2.2.2 openai==0.28.1
 ```
 
-We also set the S3 bucket as public so that the data can be accessed from any AWS account. For turning on public acccess, we turned of public access restircition under permissions tab in the bucket and added the following bucket policy:
+We also set the S3 bucket as public so that the data can be accessed from any AWS account. For turning on public acccess, we turned of public access restriction under permissions tab in the bucket and added the following bucket policy:
 
 ```
 {
@@ -54,6 +54,50 @@ High level data flow in our project is as follows:
 
 Retrieve data from arXiv --> Store the data in S3 bucket --> Extract text from the PDFs in batches stored in S3 bucket --> Store the extracted text in S3 bucket --> Read the extracted text and generate vector embeddings and create a vector store --> Save the vecotr store to S3 bucket --> Load the vector store and use it as retriever for the LLM
 
+![Data Flow Diagram](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/images/Data%20Flow.jpg)
 
 
 ## Execution
+
+###Text Extraction
+
+Once the data has been downloaded from arXiv and upload to the S3 bucket, execute [Preprocessing and Text Extraction](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/Preprocessing%20and%20Text%20Extraction.ipynb) jupyter notebook on the EMR cluster to read the PDF files from the S3 bucket, extract the text from PDFs and store then in .txt files in the S3 bucket.
+
+S3 bucket name and directory to read the files from can be configure in the notebook as follow:
+
+```
+bucket_name = "your-bucket-name"
+prefix = "parent_folder/"
+```
+Similarly output path can be configured in the last block of code as follow:
+
+```
+for i in range(500,5000,500):
+    batch_files = pdf_file_paths[i-500:i]
+    print(len(batch_files))
+    files_rdd = sc.parallelize(batch_files)
+    results = files_rdd.map(process_pdf).collect()
+    results_str = '\n'.join([str(result) for result in results])
+    s3_client.put_object(Bucket=bucket_name, Key="output_folder"+str(i+5000)+ ".txt", Body=results_str)
+```
+
+
+### Vector Embedding Generation and Vector Store Creation
+
+Once the text has been extracted and saved to the S3 bucket, we can continue to ingest the text, generate embeddings and create a vector store to save the embeddings.
+
+We used the following model to generate the embeddings:
+
+```
+from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+
+embedding_function = SentenceTransformerEmbeddings(model_name= "all-MiniLM-L6-v2", )
+```
+
+We used FAISS as the vector store to save the embeddings generated:
+
+```
+from langchain_community.vectorstores import FAISS
+
+
+```
