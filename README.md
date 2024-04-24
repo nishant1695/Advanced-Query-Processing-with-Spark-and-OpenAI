@@ -52,7 +52,7 @@ We also set the S3 bucket as public so that the data can be accessed from any AW
 
 High level data flow in our project is as follows:
 
-Retrieve data from arXiv --> Store the data in S3 bucket --> Extract text from the PDFs in batches stored in S3 bucket --> Store the extracted text in S3 bucket --> Read the extracted text and generate vector embeddings and create a vector store --> Save the vecotr store to S3 bucket --> Load the vector store and use it as retriever for the LLM
+Retrieve data from arXiv --> Store the data in S3 bucket --> Extract text from the PDFs in batches stored in S3 bucket --> Store the extracted text in S3 bucket --> Read the extracted text and generate vector embeddings and create a vector store --> Save the vector store to S3 bucket --> Load the vector store and use it as retriever for the LLM
 
 ![Data Flow Diagram](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/images/Data%20Flow.jpg)
 
@@ -99,5 +99,26 @@ We used FAISS as the vector store to save the embeddings generated:
 ```
 from langchain_community.vectorstores import FAISS
 
+faiss = FAISS.from_texts(split_text, embeddings)
+faiss.save_local(local_dir)
+```
 
+### Running the App
+
+Install the dependencies outlined in [requirements.txt](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/requirement.txt)
+
+```
+pip install -U -r requirement.txt
+```
+
+The location of the index file of vector store generated and saved previously can be set in [app.py](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/app.py) before running the application:
+
+```
+index_path = "location of index file"
+```
+
+To run the app, execute the following command:
+
+```
+streamlit run app.py
 ```
