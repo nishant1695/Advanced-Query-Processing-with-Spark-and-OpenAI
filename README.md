@@ -59,7 +59,7 @@ Retrieve data from arXiv --> Store the data in S3 bucket --> Extract text from t
 
 ## Execution
 
-###Text Extraction
+### 1. Text Extraction
 
 Once the data has been downloaded from arXiv and upload to the S3 bucket, execute [Preprocessing and Text Extraction](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/Preprocessing%20and%20Text%20Extraction.ipynb) jupyter notebook on the EMR cluster to read the PDF files from the S3 bucket, extract the text from PDFs and store then in .txt files in the S3 bucket.
 
@@ -82,7 +82,7 @@ for i in range(500,5000,500):
 ```
 
 
-### Vector Embedding Generation and Vector Store Creation
+### 2. Vector Embedding Generation and Vector Store Creation
 
 Once the text has been extracted and saved to the S3 bucket, we can continue to ingest the text, generate embeddings and create a vector store to save the embeddings.
 
@@ -103,7 +103,7 @@ faiss = FAISS.from_texts(split_text, embeddings)
 faiss.save_local(local_dir)
 ```
 
-### Running the App
+### 3. Running the App
 
 Install the dependencies outlined in [requirements.txt](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/requirement.txt)
 
