@@ -1,4 +1,4 @@
-# Advanced-Query-Processing-with-Spark-and-OpenAI
+# Advanced Query Processing with Spark and OpenAI
 
 ## Introduction
 This project showcases the implementation of a big data system utilizing a Retrieval-Augmented Generation-based Large Language Model.
