@@ -125,3 +125,10 @@ streamlit run app.py
 
 ## Results
 
+As evident from the following image, a question was asked by the user and the LLM responded with a relevant answer:
+
+![Demo](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/images/Demo.jpg)
+
+Below is the snapshot of the research paper the LLM leveraged for forming an answer to the query:
+
+![Demo Source](https://github.com/nishant1695/Advanced-Query-Processing-with-Spark-and-OpenAI/blob/main/images/Demo%20Source.jpg)
