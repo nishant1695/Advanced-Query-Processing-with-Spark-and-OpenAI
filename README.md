@@ -24,7 +24,7 @@ Setting up the EMR cluster is fairly straight forward. We used a [bootstrap scri
 sudo python3 -m pip install numpy pandas langchain pypdf2 langchain-community faiss-cpu boto3 sentence_transformers==2.2.2 openai==0.28.1
 ```
 
-We also set the S3 bucket as public so that the data can be accessed from any AWS account. For turning on public acccess, we turned of public access restriction under permissions tab in the bucket and added the following bucket policy:
+We also set the S3 bucket as public so that the data can be accessed from any AWS account. For turning on public acccess, we turned off public access restriction under permissions tab in the bucket and added the following bucket policy:
 
 ```
 {
