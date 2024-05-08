@@ -139,14 +139,13 @@ if api_key_valid:
         with st.chat_message("user"):
             st.write(prompt)
 
-    # Initialize the RAG chain if it doesn't exist
-
     if "vectorstore" not in st.session_state:
         embedding_function = SentenceTransformerEmbeddings(model_name= "all-MiniLM-L6-v2", )
         index_path = "C:\\Users\\saura\\OneDrive\\Desktop\\data\\output\\upload"
         
         st.session_state.vectorstore = load_vectorstore(index_path, embedding_function)
-    
+
+    # Initialize the RAG chain if it doesn't exis
     if "rag_chain" not in st.session_state:
         st.session_state.rag_chain = setup_language_model_chain(st.session_state.vectorstore)
     
